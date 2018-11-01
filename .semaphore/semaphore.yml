@@ -32,6 +32,7 @@ blocks:
           - checkout
           - cache restore v1-mix-deps-$(checksum mix.lock)
           - cache restore v1-mix-build-$(checksum mix.lock)
+          - sem-service start postgres
       jobs:
         - name: Everything
           commands:
