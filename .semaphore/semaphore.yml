@@ -31,6 +31,7 @@ blocks:
         commands:
           - checkout
           - cache restore v1-mix-deps-$(checksum mix.lock)
+          - cache restore v1-mix-build-$(checksum mix.lock)
       jobs:
         - name: Everything
           commands:
