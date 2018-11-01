@@ -1,0 +1,35 @@
+version: v1.0
+name: Elixir & Pheonix Example
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+
+blocks:
+  - name: "Warm caches"
+    task:
+      env_vars:
+        - name: MIX_ENV
+          value: test
+      jobs:
+        - name: Dependencies
+          commands:
+            - checkout
+            - cache restore v1-mix-deps-$(checksum mix.lock)
+            - cache restore v1-mix-build-$(checksum mix.lock)
+            - mix do deps.get, comiple
+            - cache store v1-mix-deps-$(checksum mix.lock) deps
+            - cache store v1-mix-build-$(checksum mix.lock) _build
+  - name: Tests
+    task:
+      env_vars:
+        - name: MIX_ENV
+          value: test
+      prologue:
+        commands:
+          - checkout
+          - cache restore v1-mix-deps-$(checksum mix.lock)
+      jobs:
+        - name: Everything
+          commands:
+            - mix test
