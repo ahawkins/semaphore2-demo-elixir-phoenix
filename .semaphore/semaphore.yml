@@ -14,6 +14,7 @@ blocks:
       jobs:
         - name: Dependencies
           commands:
+            - kiex list
             - checkout
             - mix local.hex --force
             - mix local.rebar --force
